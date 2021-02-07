@@ -24,6 +24,10 @@ FILE *ofptr; // define a pointer to output file
 char es[MDIM];
 char buff[MDIM];
 int ch, i, j, ret;
+char * line;
+size_t len;
+ssize_t read;
+
 /* name, surname, id, address and age */
 struct pbmImage{
     char format[3];
@@ -36,10 +40,10 @@ struct pbmImage{
 typedef struct pbmImage pbmImage;
 
 /* write the pbm image in memory on file */
-int write_pbm(pbmImage *pbm, const char *outfile);   
+int write_pbm(pbmImage *pbm, const char *outfile);
 
 /* read the pbm image from file into volatile memory */
-int read_pbm(pbmImage *pbm, const char *infile);   
+int read_pbm(pbmImage *pbm, const char *infile);
 
 int arrcpy(int destdata[MDIM][MDIM], int srcdata[MDIM][MDIM], int nrow, int ncol);
 

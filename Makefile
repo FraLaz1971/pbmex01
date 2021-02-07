@@ -16,7 +16,6 @@ all:    $(TARGET1)$(EEXT)
 $(TARGET1)$(OEXT): $(TARGET1).c simplepbm.h
 	$(CC) $(CPPFLAGS)  -c $(TARGET1).c
 
-	
 simplepbm$(OEXT): simplepbm.c simplepbm.h
 	$(CC) $(CPPFLAGS) -c simplepbm.c
 
@@ -24,7 +23,16 @@ $(TARGET1)$(EEXT): $(TARGET1)$(OEXT) simplepbm$(OEXT)
 	$(CC) $(CFLAGS) $(TARGET1)$(OEXT) simplepbm$(OEXT) -o $(TARGET1)$(EEXT) $(LDFLAGS) $(LIBS)
 
 
-.PHONY: clean all
+.PHONY: clean all Debug Release install
+
+Debug: all
+
+
+Release: all
+
+
+install: all
+
 
 clean:
 	$(RM) $(OBJ1) $(TARGET1) out.pbm

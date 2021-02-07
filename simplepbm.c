@@ -9,7 +9,7 @@
 int write_pbm(pbmImage *pbm, const char *outfile){
      strcat(es, ": Can't open file "); strcat(es, outfile); strcat(es, " for writing\n");
      ofptr = fopen(outfile,"w");
-     if (ofptr == NULL){ 
+     if (ofptr == NULL){
        fprintf(stderr,"%s: Error OPENING FILE for writing: err msg = %s\n","write_pbm()" ,strerror(errno));
        fprintf(stderr,"%s: fopen() failed in file %s at line # %d\n","write_pbm()", __FILE__,__LINE__);
        perror(es); // then handle the error
@@ -32,8 +32,7 @@ int write_pbm(pbmImage *pbm, const char *outfile){
      fprintf(ofptr,"%s\n", pbm->comment[i]);
      fprintf(ofptr,"%d %d\n", pbm->width, pbm->height);
     /* write image dimensions on stdout width height */
-     arrcpy(pbm->data, ddata, 11, 11);
-    /* write image array on stdout */
+        /* write image array on stdout */
      for (i=0; i<pbm->height; i++){
          for (j=0; j<pbm->width; j++){
             fprintf(ofptr,"%d ", pbm->data[i][j]);
@@ -41,14 +40,14 @@ int write_pbm(pbmImage *pbm, const char *outfile){
          puts("");
      }
     fclose(ofptr);
-    return 0;   
+    return 0;
 }
 
 /* read the pbm image from file into volatile memory */
 int read_pbm(pbmImage *pbm, const char *infile){
      strcat(es, ": Can't open file "); strcat(es, infile); strcat(es, " for reading\n");
      ifptr = fopen(infile,"r");
-     if (ifptr == NULL){ 
+     if (ifptr == NULL){
        fprintf(stderr,"Error OPENING FILE for reading: err msg = %s\n", strerror(errno));
        fprintf(stderr,"fopen() failed in file %s at line # %d\n", __FILE__,__LINE__);
        perror(es); // then handle the error
@@ -65,7 +64,48 @@ int read_pbm(pbmImage *pbm, const char *infile){
         printf("PNM image width:%d\n", pbm->width);
         printf("PNM image height:%d\n", pbm->height);
     #endif
+        line = (char *) malloc(MDIM*sizeof(char));
+        line[0] = '\0';
+        len = 0;
+#ifdef DEBUG
+        while ((read = getline(&line, &len, ifptr)) != -1) {
+            fprintf(stderr, "Retrieved line of length %zu:, value: %s\n", read, line);
+        }
+#endif
+
         i=0;
+        if ((read = getline(&line, &len, ifptr)) != -1){
+            fprintf(stderr, "Retrieved pbm format line, length %zu, value: %s\n", read, line);
+            strncpy(pbm->format, line, 3);
+        } else {
+            perror("read_pbm() error in reading format line ");
+        }
+
+        if ((read = getline(&line, &len, ifptr)) != -1){
+            fprintf(stderr, "Retrieved pbm comment line, length %zu, value: %s\n", read, line);
+            strcpy(pbm->comment[i], line);
+        } else {
+            perror("read_pbm() error in reading comment line ");
+        }
+
+        if ((read = fscanf(ifptr, "%d %d", &pbm->width, &pbm->width )) != -1){
+            fprintf(stderr, "Retrieved pbm dimensions line, n.values %zu, width: %d, height: %d \n", read, pbm->width, pbm->width);
+        } else {
+            perror("read_pbm() error in reading image dimensions line ");
+        }
+
+        for (i=0; i<pbm->height; i++){
+            for (j=0; j<pbm->width; j++){
+                if ((read = fscanf(ifptr, "%d", &pbm->data[i][j])) != -1){
+                    fprintf(stderr, "Retrieved pbm image element, n.values %zu, row: %d, column: %d, val: %d\n", read, i, j, pbm->data[i][j] );
+                } else {
+                    perror("read_pbm() error in reading image dimensions line ");
+                }
+            }
+            puts("");
+        }
+
+#ifdef DEBUG
         printf("%s\n", pbm->format);
         printf("%s\n", pbm->comment[i]);
         printf("%d %d\n", pbm->width, pbm->height);
@@ -78,10 +118,11 @@ int read_pbm(pbmImage *pbm, const char *infile){
             }
             puts("");
         }
-     
+#endif // DEBUG
      }
+     free(line);
      fclose(ifptr);
-     return 0;   
+     return 0;
 }
 
 

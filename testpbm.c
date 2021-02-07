@@ -12,10 +12,11 @@ int main(int argc, char **argv){
     mypbm.comment[0] = (char*)&c1;
     mypbm.width  = 11;
     mypbm.height = 11;
-    set_pbm_default(&mypbm);
+    //set_pbm_default(&mypbm);
     read_pbm(&mypbm, infilename);
     write_pbm(&mypbm, outfilename);
     fprintf(stderr,"%s: program END!\n", argv[0]);
+    free(mypbm.comment);
     return 0;
 }
 
