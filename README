@@ -1,0 +1,8 @@
+testpbm.c
+example program to test the
+PNM PBM P1 bitmap (b/W)
+image format read / write capabilities.
+it links a functions library
+simplepbm.o that handles 
+basic image i/o and facilities.
+
