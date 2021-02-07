@@ -1,10 +1,16 @@
-testpbm.c
-example program to test the
-PNM PBM P1 bitmap (b/W)
-image format read / write capabilities.
-It links a functions library
-simplepbm.o that handles 
-basic image i/o and facilities.
-Needs GNU c compiler gcc (Linux/MacOS) 
-or mingw gcc (MS win).
+# testpbm.c
+# example program to test the
+# PNM PBM P1 bitmap (b/W)
+# image format read / write capabilities.
+# It links a functions library
+# simplepbm.o that handles 
+# basic image i/o and facilities.
+# Needs GNU c compiler gcc (Linux/MacOS) 
+# or mingw gcc (MS win).
+# to compile
+make
+#to run
+./testpbm 
+# it reads the file in peace.pbm 
+# and save  the read image to file out.pbm
 

@@ -28,8 +28,8 @@ int write_pbm(pbmImage *pbm, const char *outfile){
      fprintf(stderr, "%s: PNM image height:%d\n","write_pbm()", pbm->height);
 #endif
      i=0;
-     fprintf(ofptr,"%s\n", pbm->format);
-     fprintf(ofptr,"%s\n", pbm->comment[i]);
+     fprintf(ofptr,"%s", pbm->format);
+     fprintf(ofptr,"%s", pbm->comment[i]);
      fprintf(ofptr,"%d %d\n", pbm->width, pbm->height);
     /* write image dimensions on stdout width height */
         /* write image array on stdout */
@@ -37,7 +37,7 @@ int write_pbm(pbmImage *pbm, const char *outfile){
          for (j=0; j<pbm->width; j++){
             fprintf(ofptr,"%d ", pbm->data[i][j]);
          }
-         puts("");
+         fprintf(ofptr,"\n");
      }
     fclose(ofptr);
     return 0;
